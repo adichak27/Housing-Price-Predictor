@@ -85,6 +85,7 @@ API will be available at `http://localhost:8000`.
 ---
 
 ### 3. Frontend Setup (React + Vite)
+####🔁 Run this in a separate terminal while the backend is running.
 
 ```bash
 cd frontend
