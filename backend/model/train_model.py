@@ -18,7 +18,13 @@ X = np.array([
 y = np.array([150000, 200000, 250000, 300000, 320000, 360000, 380000, 400000])
 
 # Train the model
-model = LinearRegression()
+model = LinearRegression(
+  fit_intercept=True,
+  # normalize=False,  # deprecated in recent versions
+  copy_X=True,
+  n_jobs=None,
+  positive=False
+)
 model.fit(X, y)
 # Save the model
 joblib.dump(model, 'backend/model/model.pkl')
