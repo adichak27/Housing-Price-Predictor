@@ -45,7 +45,6 @@ dist-ssr/
 *.sw?
 
 # Model files
-*.pkl
 *.h5
 *.joblib
 *.model
