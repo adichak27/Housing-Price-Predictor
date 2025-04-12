@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import clsx from 'clsx';
 import { predictPrice } from '../api/predict';
+import { Prediction } from '../hooks/usePredictionHistory';
 
 interface FormData {
   squareFootage: number;
@@ -15,15 +16,19 @@ const inactiveLabelClasses = 'top-2 left-4';
 const inputClasses =
   'w-full px-4 py-2 border rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent transition-all duration-200 placeholder:text-gray-400 placeholder:shadow-none';
 
+  interface PriceFormProps {
+    setPredictionHistory: React.Dispatch<React.SetStateAction<Prediction[]>>;
+  }
 
-export function PriceForm(): React.ReactElement {
+export function PriceForm({ setPredictionHistory }: PriceFormProps): React.ReactElement {
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [prediction, setPrediction] = useState<number | null>(null);
+  const [price, setPrice] = useState<number | null>(null);
   const [formData, setFormData] = useState<FormData>({
     squareFootage: 0,
     bedrooms: 0
   });
   const [errors, setErrors] = useState<Partial<Record<keyof FormData, string>>>({});
+
 
   const validateForm = (data: FormData): boolean => {
     console.log('Validating form...');
@@ -46,7 +51,7 @@ export function PriceForm(): React.ReactElement {
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setPrediction(null);
+    setPrice(null); // Reset price when input changes
     const { name, value } = e.target;
     const numValue = value === '' ? 0 : Number(value);
     setFormData(prev => ({
@@ -63,10 +68,11 @@ export function PriceForm(): React.ReactElement {
       console.log('Submitting form...');
       setIsSubmitting(true);
       // API call
-      const price = await predictPrice(formData.squareFootage, formData.bedrooms);
-      console.log('Price:', price);
+      const newPrediction = await predictPrice(formData.squareFootage, formData.bedrooms);
+      console.log('Price:', newPrediction.predictedPrice);
 
-      setPrediction(price); 
+      setPrice(newPrediction.predictedPrice); 
+      setPredictionHistory(prev => [newPrediction, ...prev]);
     } catch (error) {
       console.error('Error:', error);
     } finally {
@@ -181,14 +187,14 @@ export function PriceForm(): React.ReactElement {
           </motion.button>
         </form>
 
-        {prediction !== null && (
+        {price !== null && (
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             className="mt-6 p-4 bg-green-50 rounded-lg text-center"
           >
             <p className="text-green-800 font-medium">
-              Estimated Price: ${prediction.toLocaleString()}
+              Estimated Price: ${price.toLocaleString()}
             </p>
           </motion.div>
         )}

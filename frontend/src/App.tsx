@@ -1,7 +1,12 @@
 import React from 'react';
 import { PriceForm } from './components/PriceForm';
+import { PredictionHistory } from './components/PredictionHistory';
+import { usePredictionHistory } from './hooks/usePredictionHistory';
+
 
 export function App(): React.ReactElement {
+  const { predictionHistory, setPredictionHistory, isLoading, error } = usePredictionHistory();
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-primary-50 via-white to-secondary-50 p-4 sm:p-6 md:p-8">
       <div className="max-w-7xl mx-auto">
@@ -14,8 +19,13 @@ export function App(): React.ReactElement {
           </p>
         </header>
         
-        <main>
-          <PriceForm />
+        <main className="space-y-12">
+          <PriceForm setPredictionHistory={setPredictionHistory}/>
+          <PredictionHistory 
+            predictionHistory={predictionHistory}
+            isLoading={isLoading}
+            error={error}
+          />
         </main>
 
         <footer className="mt-12 text-center text-gray-500 text-sm">
