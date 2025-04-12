@@ -1,60 +1,146 @@
-# Housing Price Predictor
 
-A full-stack application that predicts housing prices using machine learning. The project consists of a React frontend built with Vite and a Python backend using FastAPI.
+# 🏡 Housing Price Predictor
 
-## Project Structure
+A full-stack web application that uses a simple machine learning model to predict housing prices based on square footage and number of bedrooms. Built with **React + TypeScript** on the frontend and **FastAPI + SQLite + scikit-learn** on the backend.
+
+---
+
+## 🚀 Features
+
+- 🧾 Intuitive UI for entering house details
+- 🧠 Real-time ML predictions using linear regression
+- 📈 Backend logs every prediction with a timestamp
+- 💾 Lightweight SQLite database
+- ⚡ Modern stack with Vite, Tailwind, FastAPI, and scikit-learn
+
+---
+
+## 🧠 Tech Stack
+
+| Frontend        | Backend         | ML + Data        | Storage      |
+|-----------------|------------------|------------------|--------------|
+| React + TypeScript | FastAPI (Python) | scikit-learn + joblib | SQLite       |
+| Vite + Tailwind | Uvicorn          | NumPy            | sqlite3 (standard library) |
+
+---
+
+## 📁 Project Structure
 
 ```
 housing-price-predictor/
-├── backend/               # Python FastAPI backend
-│   ├── main.py           # FastAPI application entry point
-│   ├── api/              # API routes
-│   ├── model/            # ML model training and prediction
-│   ├── db/               # Database setup and operations
-│   └── requirements.txt  # Python dependencies
-│
-└── frontend/             # React frontend
-    ├── index.html        # Entry HTML file
-    ├── src/              # Source code
-    └── vite.config.js    # Vite configuration
+├── backend/
+│   ├── api/               # FastAPI routes (future use)
+│   ├── db/                # SQLite setup
+│   ├── model/             # Training script & model
+│   ├── main.py            # FastAPI app entry point
+│   └── requirements.txt
+├── frontend/
+│   ├── src/
+│   │   ├── components/    # React components
+│   │   ├── api/           # API handler (predict.ts)
+│   │   └── main.tsx       # React entry point
+│   └── index.html
+├── .gitignore
+└── README.md
 ```
 
-## Setup
+---
 
-### Backend Setup
-1. Create a virtual environment:
-   ```bash
-   cd backend
-   python -m venv venv
-   source venv/bin/activate  # On Windows: venv\Scripts\activate
-   pip install -r requirements.txt
-   ```
+## 🛠 Installation & Local Setup
 
-2. Run the backend server:
-   ```bash
-   uvicorn main:app --reload
-   ```
+### 1. Clone the Repository
 
-### Frontend Setup
-1. Install dependencies:
-   ```bash
-   cd frontend
-   npm install
-   ```
+```bash
+git clone https://github.com/your-username/housing-price-predictor.git
+cd housing-price-predictor
+```
 
-2. Run the development server:
-   ```bash
-   npm run dev
-   ```
+---
 
-## Features
-- Machine learning model for housing price prediction
-- React-based user interface
-- FastAPI backend with SQLite logging
-- Real-time price predictions
+### 2. Backend Setup (Python + FastAPI)
 
-## Technologies Used
-- Frontend: React, Vite
-- Backend: Python, FastAPI
-- Database: SQLite
-- ML: scikit-learn
+#### Create and activate a virtual environment:
+
+```bash
+python -m venv venv
+source venv/bin/activate   # macOS/Linux
+# OR
+venv\Scripts\activate      # Windows
+```
+
+#### Install dependencies:
+
+```bash
+pip install -r backend/requirements.txt
+```
+
+#### Run the FastAPI server:
+
+```bash
+uvicorn backend.main:app --reload
+```
+
+API will be available at `http://localhost:8000`.
+
+---
+
+### 3. Frontend Setup (React + Vite)
+
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+App will be available at `http://localhost:3000`.
+
+---
+
+## 🔗 API Endpoint
+
+**POST** `/predict`  
+Predict house price based on input:
+
+### Payload:
+```json
+{
+  "squareFootage": 2000,
+  "bedrooms": 4
+}
+```
+
+### Response:
+```json
+{
+  "predictedPrice": 320000.0
+}
+```
+
+---
+
+## 🗃 Database
+
+- Uses SQLite (`backend/db/predictions.db`) to log:
+  - square footage
+  - bedrooms
+  - predicted price
+  - timestamp
+
+> 📝 The DB is auto-created at runtime. No setup needed.
+
+---
+
+## 🧪 Sample Training Data
+
+| Square Footage | Bedrooms | Price ($) |
+|----------------|----------|-----------|
+| 800            | 2        | 150,000   |
+| 1200           | 3        | 200,000   |
+| 1500           | 3        | 250,000   |
+| 1800           | 4        | 300,000   |
+| 2000           | 4        | 320,000   |
+| 2200           | 5        | 360,000   |
+| 2400           | 4        | 380,000   |
+| 2600           | 5        | 400,000   |
+
+---
