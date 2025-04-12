@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import clsx from 'clsx';
+import { predictPrice } from '../api/predict';
 
 interface FormData {
   squareFootage: number;
   bedrooms: number;
 }
-
+const maxSquareFootage = 100000;
+const maxBedrooms = 20;
 const labelClasses = 'absolute left-3 transition-all duration-200 pointer-events-none text-gray-500';
 const activeLabelClasses = '-top-6 left-0 text-sm text-primary-600';
 const inactiveLabelClasses = 'top-2 left-4';
@@ -24,18 +26,19 @@ export function PriceForm(): React.ReactElement {
   const [errors, setErrors] = useState<Partial<Record<keyof FormData, string>>>({});
 
   const validateForm = (data: FormData): boolean => {
+    console.log('Validating form...');
     const newErrors: Partial<Record<keyof FormData, string>> = {};
 
     if (data.squareFootage < 100) {
       newErrors.squareFootage = 'Square footage must be at least 100';
-    } else if (data.squareFootage > 10000) {
-      newErrors.squareFootage = 'Square footage must be less than 10,000';
+    } else if (data.squareFootage > maxSquareFootage) {
+      newErrors.squareFootage = 'Square footage must be less than ' + maxSquareFootage;
     }
 
     if (data.bedrooms < 1) {
       newErrors.bedrooms = 'Must have at least 1 bedroom';
-    } else if (data.bedrooms > 10) {
-      newErrors.bedrooms = 'Must have less than 10 bedrooms';
+    } else if (data.bedrooms > maxBedrooms) {
+      newErrors.bedrooms = 'Must have less than ' + maxBedrooms + ' bedrooms';
     }
 
     setErrors(newErrors);
@@ -43,6 +46,7 @@ export function PriceForm(): React.ReactElement {
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setPrediction(null);
     const { name, value } = e.target;
     const numValue = value === '' ? 0 : Number(value);
     setFormData(prev => ({
@@ -56,17 +60,19 @@ export function PriceForm(): React.ReactElement {
     if (!validateForm(formData)) return;
 
     try {
+      console.log('Submitting form...');
       setIsSubmitting(true);
-      // TODO: Implement API call
-      await new Promise(resolve => setTimeout(resolve, 1000)); // Simulated API call
-      setPrediction(500000); // Example prediction
+      // API call
+      const price = await predictPrice(formData.squareFootage, formData.bedrooms);
+      console.log('Price:', price);
+
+      setPrediction(price); 
     } catch (error) {
       console.error('Error:', error);
     } finally {
       setIsSubmitting(false);
     }
   };
-
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -97,7 +103,7 @@ export function PriceForm(): React.ReactElement {
               value={formData.squareFootage || ''}
               onChange={handleInputChange}
               min="100"
-              max="10000"
+              max={maxSquareFootage}
               className={clsx(inputClasses, {
                 'border-red-500 focus:ring-red-400': errors.squareFootage,
               })}
@@ -131,7 +137,7 @@ export function PriceForm(): React.ReactElement {
               value={formData.bedrooms || ''}
               onChange={handleInputChange}
               min="1"
-              max="10"
+              max={maxBedrooms}
               className={clsx(inputClasses, {
                 'border-red-500 focus:ring-red-400': errors.bedrooms,
               })}

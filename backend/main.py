@@ -6,6 +6,21 @@ import numpy as np
 import sqlite3
 
 app = FastAPI()
+
+from fastapi.middleware.cors import CORSMiddleware
+
+app = FastAPI()
+
+# 👇 Add this middleware config before defining any routes
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # You can restrict to ["http://localhost:3000"] in production
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+
 model = joblib.load("backend/model/model.pkl")
 
 # SQLite setup 
@@ -34,5 +49,12 @@ def predict(req: PredictionRequest):
         (req.squareFootage, req.bedrooms, prediction)
     )
     conn.commit()
+
+    # Fetch all rows and print
+    # cursor.execute("SELECT * FROM predictions")
+    # rows = cursor.fetchall()
+    # for row in rows:
+    #     print(row)
+
 
     return {"predictedPrice": round(prediction, 2)}

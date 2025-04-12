@@ -21,5 +21,5 @@ y = np.array([150000, 200000, 250000, 300000, 320000, 360000, 380000, 400000])
 model = LinearRegression()
 model.fit(X, y)
 # Save the model
-joblib.dump(model, 'model.pkl')
+joblib.dump(model, 'backend/model/model.pkl')
 print("Model trained and saved successfully!")
