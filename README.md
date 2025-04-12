@@ -1,11 +1,11 @@
 
-# 🏡 Housing Price Predictor
+# Housing Price Predictor
 
 A full-stack web application that uses a simple machine learning model to predict housing prices based on square footage and number of bedrooms. Built with **React + TypeScript** on the frontend and **FastAPI + SQLite + scikit-learn** on the backend.
 
 ---
 
-## 🚀 Features
+## Features
 
 - 🧾 Intuitive UI for entering house details
 - 🧠 Real-time ML predictions using linear regression
@@ -15,7 +15,7 @@ A full-stack web application that uses a simple machine learning model to predic
 
 ---
 
-## 🧠 Tech Stack
+## Tech Stack
 
 | Frontend        | Backend         | ML + Data        | Storage      |
 |-----------------|------------------|------------------|--------------|
@@ -46,7 +46,7 @@ housing-price-predictor/
 
 ---
 
-## 🛠 Installation & Local Setup
+## Installation & Local Setup
 
 ### 1. Clone the Repository
 
@@ -96,7 +96,7 @@ App will be available at `http://localhost:3000`.
 
 ---
 
-## 🔗 API Endpoint
+## API Endpoint
 
 **POST** `/predict`  
 Predict house price based on input:
@@ -118,7 +118,7 @@ Predict house price based on input:
 
 ---
 
-## 🗃 Database
+## Database
 
 - Uses SQLite (`backend/db/predictions.db`) to log:
   - square footage
@@ -126,11 +126,11 @@ Predict house price based on input:
   - predicted price
   - timestamp
 
-> 📝 The DB is auto-created at runtime. No setup needed.
+> The DB is auto-created at runtime. No setup needed.
 
 ---
 
-## 🧪 Sample Training Data
+## Sample Training Data
 
 | Square Footage | Bedrooms | Price ($) |
 |----------------|----------|-----------|
