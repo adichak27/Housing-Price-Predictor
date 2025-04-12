@@ -30,7 +30,8 @@ cursor.execute('''CREATE TABLE IF NOT EXISTS predictions (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     square_footage INTEGER,
     bedrooms INTEGER,
-    predicted_price REAL
+    predicted_price REAL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 )''')
 conn.commit()
 
@@ -54,7 +55,7 @@ def predict(req: PredictionRequest):
     # cursor.execute("SELECT * FROM predictions")
     # rows = cursor.fetchall()
     # for row in rows:
-    #     print(row)
+    #    print(row)
 
 
     return {"predictedPrice": round(prediction, 2)}
